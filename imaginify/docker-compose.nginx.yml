@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  backend:
+    image: registry.mahitahi.global.fujitsu.com/frontend/imaginify/backend:${APPLICATION_TAG}
+    build:
+      context: ./fastapi
+      dockerfile: Dockerfile
+      args:
+        - OPENAI_API_KEY=${OPENAI_API_KEY}
+        - FRONTEND_URL=${FRONTEND_URL}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: registry.mahitahi.global.fujitsu.com/frontend/imaginify/frontend:${APPLICATION_TAG}
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+      target: nginx
+      args:
+        - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
+        - REACT_APP_REAL_CALLS=${REACT_APP_REAL_CALLS}
+    ports:
+      - "80:80"
+    depends_on:
+      - backend

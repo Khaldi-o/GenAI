@@ -1,0 +1,10 @@
+fastapi
+pydantic
+openai
+requests
+pyjwt
+bcrypt
+pydantic[email]
+uvicorn
+pytz
+schedule

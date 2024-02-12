@@ -1,0 +1,16 @@
+#posts {
+  width: 90%;
+  max-width: 70rem;
+  list-style: none;
+  margin: 2rem auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem;
+}
+/* Responsive Grid for Small Screens (e.g., Smartphone) */
+@media screen and (max-width: 768px) {
+  #posts {
+    grid-template-columns: 1fr; /* Display as a single column */
+  }
+}

@@ -1,0 +1,13 @@
+.footer {
+  max-height: 10vh;
+}
+.footer a {
+  color: #999;
+  line-height: 1.9;
+  font-size: 0.9rem;
+}
+
+.footer a:hover {
+  line-height: 1.9;
+  color: #fffdf9;
+}

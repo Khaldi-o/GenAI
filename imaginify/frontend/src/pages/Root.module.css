@@ -1,0 +1,9 @@
+.rootMainHeader {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.main {
+  flex-grow: 1; /* Permet au contenu principal d'occuper l'espace disponible */
+}

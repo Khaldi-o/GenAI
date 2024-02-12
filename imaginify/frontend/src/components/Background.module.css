@@ -1,0 +1,13 @@
+.containerImg {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.373),
+      rgba(0, 0, 0, 0.822) 70.71%
+    ),
+    url("../assets/back1.jpg"); /* Path to your background image */
+  background-size: cover; /* Cover the entire area of the element */
+  background-position: center; /* Center the image in the element */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-attachment: fixed; /* Fix the background image */
+  /* backdrop-filter: brightness(30%) blur(0) saturate(150%); */
+}
