@@ -12,8 +12,8 @@ client = AzureOpenAI(
 )
 
 draw = OpenAI(
-    api_key= "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",
-    organization="org-2aLBjgtPwWhnFgcgdp8trmFJ"
+    api_key= "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",
+    organization="org-IDN8MtRfyievTcVgcYVXaMLE"
 )
 # ----------------------------------------------------- #
 
@@ -45,24 +45,31 @@ def drawDalle3(prompt, network) :
 
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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',
-        'OpenAI-Organization': 'org-2aLBjgtPwWhnFgcgdp8trmFJ'
+        'Authorization': 'Bearer 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',
+        'OpenAI-Organization': 'org-IDN8MtRfyievTcVgcYVXaMLE'
     }
 
     payload = {
-        "model": "dall-e-3",
+        "model": "dall-e-2",
         "prompt": prompt,
         "n": 1,
         "size": size
     }
 
     try:
-        response = requests.post(url, headers=headers, json=payload, verify=False)
-        response.raise_for_status()
+         # response = requests.post(url, headers=headers, json=payload, verify=False)
+        # response.raise_for_status()
         
-        data = response.json()
-        generated_url = data['data'][0]['url']
-
+        # data = response.json()
+        response = draw.images.generate(
+        model="dall-e-2",
+        prompt=prompt,
+        size=size,
+        quality="standard",
+        n=1,
+        )
+        # generated_url = data['data'][0]['url']
+        generated_url = response.data[0].url
         return generated_url
 
     except requests.exceptions.RequestException as err:
