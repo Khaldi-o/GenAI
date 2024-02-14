@@ -332,7 +332,7 @@ async def create_content(details: Details, authorization=Header(None)):
     return {
         "network": network,
         "text": post_text,
-        "prompt_image": image_prompt,
+        "image_prompt": image_prompt,
         "text_credit": user["text_credit"] - 1,
     }
 
