@@ -176,27 +176,27 @@ async def create_content(details: Details, authorization=Header(None)):
         prompt_user2 += network
         prompt_user2 += ". Ecrivez seulement le prompt pour générer l'image, n'ajoutez pas d'émoji ou de hashtags."
 
-    image_prompt = askOpenAI(prompt_user2, prompt_system2)
-    image_url_1 = drawDalle3(image_prompt, network)
-    image_url_2 = drawDalle3(image_prompt, network)
-    image_url_3 = drawDalle3(image_prompt, network)
-    image_url_4 = drawDalle3(image_prompt, network)
+    # image_prompt = askOpenAI(prompt_user2, prompt_system2)
+    # image_url_1 = drawDalle3(image_prompt, network)
+    # image_url_2 = drawDalle3(image_prompt, network)
+    # image_url_3 = drawDalle3(image_prompt, network)
+    # image_url_4 = drawDalle3(image_prompt, network)
     images = [
-        {"id": "a", "url": image_url_1},
-        {"id": "b", "url": image_url_2},
-        {"id": "c", "url": image_url_3},
-        {"id": "d", "url": image_url_4},
+        {"id": "a", "url": None},
+        {"id": "b", "url": None},
+        {"id": "c", "url": None},
+        {"id": "d", "url": None},
     ]
 
     decrement_text_credit(id_user)
-    decrement_image_credit(id_user)
+    # decrement_image_credit(id_user)
 
     return {
         "network": network,
         "text": post_text,
         "images": images,
         "text_credit": user["text_credit"] - 1,
-        "image_credit": user["image_credit"] - 1,
+        # "image_credit": user["image_credit"] - 1,
         "subject": subject,
     }
 
@@ -357,7 +357,8 @@ async def create_content_image(image_schema: ImageSchema, authorization=Header(N
 
     network = image_schema.network
     image_prompt = image_schema.image_prompt
-
+    print('------------------')
+    print(image_prompt)
     image_url_1 = drawDalle3(image_prompt, network)
     image_url_2 = drawDalle3(image_prompt, network)
     image_url_3 = drawDalle3(image_prompt, network)

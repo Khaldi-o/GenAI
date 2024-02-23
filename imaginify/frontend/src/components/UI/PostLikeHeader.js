@@ -5,13 +5,16 @@ const UserAvatar =
 const UserName = "Avatar";
 
 const PostLikeHeader = forwardRef(function PostLikeHeader(
-  { data, edit, height, onChange },
+  { data, edit, height, onChange, onPromptChange },
   ref,
 ) {
   const userName = UserName;
   const userAvatar = UserAvatar;
   const handleTextChanges = (event) => {
     onChange(event.target.value);
+  };
+  const handlePromptChanges = (event) => {
+    onPromptChange(event.target.value);
   };
 
   return (
@@ -40,13 +43,26 @@ const PostLikeHeader = forwardRef(function PostLikeHeader(
                 onChange={handleTextChanges}
               />
             )}
+            {edit && (<textarea
+                className="w-full text-sm"
+                style={{ height: height }}
+                id="postImageText"
+                name="postImageText"
+                value={data.image_prompt}
+                onChange={handlePromptChanges}
+              />)}
+               {!edit && (
+              <p className="text-sm">
+                {data.image_prompt}
+              </p>
+            )}
           </div>
         </div>
       </div>
-
       {data.url && (
         <img src={data.url} alt="Post" className="w-full h-auto object-cover" />
       )}
+      
       <div className="flex justify-between items-center p-4 border-t">
         <span>💬 Reply</span>
         <span>🔁 Retweet</span>

@@ -1,7 +1,7 @@
 import { previewActions } from "../../store/preview-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { useSubmit } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import PostLikeHeader from "./PostLikeHeader";
 
 export default function LinkedInPostLayout({ ...props }) {
@@ -11,9 +11,18 @@ export default function LinkedInPostLayout({ ...props }) {
   const previewData = useSelector((state) => state.preview.previewData);
   const paragraphRef = useRef();
   const [textareaHeight, setTextareaHeight] = useState("auto");
-
+  useEffect(() => {
+    console.log(previewData.image_prompt);
+    if (!edit && previewData.image_prompt) {
+      submit(previewData, {method: 'post'});
+    }
+    return () => {
+      // cancel the subscription
+  };
+  }, [edit]);
   const handleEdit = () => {
     setEdit((state) => !state);
+    console.log('edit',edit);
     if (paragraphRef.current) {
       setTextareaHeight(`${paragraphRef.current.offsetHeight}px`);
     }
@@ -21,11 +30,14 @@ export default function LinkedInPostLayout({ ...props }) {
   const handleTextChanges = (event) => {
     dispatch(previewActions.editText(event));
   };
+  const handleImageTextChanges = (event) => {
+    dispatch(previewActions.editImageText(event));
+  }
   const handlePost = () => {
     const proceed = window.confirm("Save in catalog?");
     if (proceed) {
       dispatch(previewActions.closePreview());
-      submit(previewData, { method: "post" });
+      submit({...previewData, save:true}, { method: "post" });
     }
   };
   const handleClose = () => {
@@ -38,6 +50,7 @@ export default function LinkedInPostLayout({ ...props }) {
         edit={edit}
         height={textareaHeight}
         onChange={handleTextChanges}
+        onPromptChange={handleImageTextChanges}
         ref={paragraphRef}
       />
       <div className="flex justify-end p-4">

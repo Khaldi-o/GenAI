@@ -3,7 +3,6 @@ import {
   useNavigate,
   useNavigation,
   useActionData,
-  useState,
   json,
 } from "react-router-dom";
 import classes from "./NewPostForm.module.css";
@@ -21,85 +20,12 @@ function NewPostForm({ method }) {
   const navigate = useNavigate();
   // const submit = useSubmit();
   const navigation = useNavigation();
-
-  // const [textLoading, setTextLoading] = useState(false);  
-  // const [imgLoading, setImgLoading] = useState(false);   
   useEffect(() => {
-    if (data) {
-      console.log('data');
-      let url = `${process.env.REACT_APP_BACKEND_URL || "http://localhost:8080"}/`;
-      let text_url =
-        url + `${process.env.REACT_APP_REAL_CALLS === "true" ? "content/text" : "test"}`;
-      let img_url =
-        url + `${process.env.REACT_APP_REAL_CALLS === "true" ? "content/image" : "test"}`;
-      const token = getAuthToken();
-      let respData;
-        async function fetchTEST() {
-          return fetch(text_url, {
-            method: method,
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-              Accept: "application/json",
-            },
-            body: JSON.stringify(data),
-          })
-          .then(async function(response) {
-             if (response.status === 422) {
-            return response;
-          }
-        
-          if (!response.ok) {
-            throw json({ message: "Could not generate new post." }, { status: 500 });
-          }
-        
-         
-            respData = await response.json();
-            
-           
-          localStorage.setItem("text_credit", respData.text_credit);
-        
-          respData.foo = 'bar';
-          console.log('TEXT RETURN');
-          dispatch(postActions.writeData(respData));
-          navigate("/post");
-          return respData;
-          })
-          .then(async function (response){
-            return fetch(img_url, {
-              method: method,
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-                Accept: "application/json",
-              },
-              body: JSON.stringify(response),
-            })
-            .then(async function(response) {
-               if (response.status === 422) {
-                  return response;
-              }
-                if (!response.ok) {
-                  throw json({ message: "Could not generate new post." }, { status: 500 });
-                }
-              let respData2 = {text: respData.text, ... await response.json()};  // Corrected variable name
-              console.log('finally', respData2, Object.isExtensible(respData2));
-              respData2.images = respData2.images;
-              dispatch(postActions.writeData(respData2));
-              localStorage.setItem("image_credit", respData2.image_credit);
-              console.log(respData2);
-            })
-          
-          })       
-        }
-         console.log("DATA", data);
-         fetchTEST();
-        // dispatch(postActions.writeData(data));
+    if (data && data.text) {
+      dispatch(postActions.writeData(data));
+      navigate("/post");
     }
-    
-      
-
-  }, [data,dispatch, navigate]);
+  }, [data, dispatch, navigate]);
 
   const isSubmitting = navigation.state === "submitting";
 
@@ -255,7 +181,6 @@ export async function action({ request, params }) {
   const network = data.get("network");
   const characters = data.get("characters");
 
-
   if (
     network === SOCIAL_MEDIA.LINKEDIN &&
     +characters > SOCIAL_MEDIA_CHAR_LIM.LINKEDIN
@@ -320,5 +245,32 @@ export async function action({ request, params }) {
     language: data.get("language"),
     OutputLanguage: data.get("outputLanguage"),
   };
-  return newPostData;
+
+  let url = `${process.env.REACT_APP_BACKEND_URL || "http://localhost:8080"}/`;
+  url =
+    url + `${process.env.REACT_APP_REAL_CALLS === "true" ? "content" : "test"}`;
+
+  const token = getAuthToken();
+  const response = await fetch(url, {
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+      Accept: "application/json",
+    },
+    body: JSON.stringify(newPostData),
+  });
+
+  if (response.status === 422) {
+    return response;
+  }
+
+  if (!response.ok) {
+    throw json({ message: "Could not generate new post." }, { status: 500 });
+  }
+
+  const respData = await response.json();
+  localStorage.setItem("text_credit", respData.text_credit);
+  localStorage.setItem("image_credit", respData.image_credit);
+  return respData;
 }

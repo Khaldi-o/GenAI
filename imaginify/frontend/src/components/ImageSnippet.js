@@ -6,12 +6,15 @@ export default function ImageSnippet({ image }) {
   const dispatch = useDispatch();
 
   const handlePreview = () => {
-    dispatch(
+    if (image.url) {
+      dispatch(
       previewActions.writeData({
         id: image.id,
         url: image.url,
       }),
     );
+    }
+    
     dispatch(previewActions.openPreview());
   };
   return (

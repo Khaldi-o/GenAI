@@ -12,7 +12,7 @@ client = AzureOpenAI(
 )
 
 draw = OpenAI(
-    api_key= "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",
+    api_key= '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',
     organization="org-IDN8MtRfyievTcVgcYVXaMLE"
 )
 # ----------------------------------------------------- #
@@ -45,7 +45,7 @@ def drawDalle3(prompt, network) :
 
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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',
+        'Authorization': 'Bearer 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',
         'OpenAI-Organization': 'org-IDN8MtRfyievTcVgcYVXaMLE'
     }
 

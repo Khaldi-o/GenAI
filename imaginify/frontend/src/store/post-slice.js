@@ -5,6 +5,7 @@ const postSlice = createSlice({
   initialState: { postData: {} },
   reducers: {
     writeData(state, action) {
+      console.log('action',action);
       const postdata = action.payload;
       console.log('post', postdata);
       state.postData = postdata;
